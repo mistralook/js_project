@@ -11,7 +11,7 @@ class QuestionGenerator {
 
 const Hints = {
     "FiftyFifty": 0,
-    "FrinedCall": 1,
+    "FriendCall": 1,
     "AskTheAudience": 2
 }
 
@@ -23,6 +23,7 @@ class Game {
         this.player = player;
         this.isAlive = true;
         this.currentQuestion = new Question();
+        this.availableHints = new Set([Hints.FriendCall, Hints.FiftyFifty, Hints.AskTheAudience]);
     };
 
     checkAnswer(answer) {
@@ -43,16 +44,41 @@ class Game {
     }
 
     activateHint(hintType) {
-        switch (hintType) {
-            case Hints.FiftyFifty:
-                break;
-            case Hints.FriendCall:
-                break;
-            case Hints.AskTheAudience:
-                break;
+        const question = this.currentQuestion;
+        if (!this.availableHints.has(hintType))
+            return;
+        else
+            this.availableHints.delete(hintType);
+        if (hintType === Hints.FiftyFifty) {
+            const incorrectAnsIndexes = [0, 1, 2, 3].filter(x => x != question.correctAnswerIndex)
+            let twoIncorIndexes = incorrectAnsIndexes
+                .sort(function () { return .5 - Math.random() }) // Shuffle array
+                .slice(0, 2); // Get first 2 items
+            let incorInd1 = twoIncorIndexes[0];
+            let incorInd2 = twoIncorIndexes[1];
+
+            question.variants[incorInd1] = "";
+            question.variants[incorInd2] = "";
         }
+        else if (hintType === Hints.FriendCall) {
+            const correctAnswerIndex = question.correctAnswerIndex;
+            const answers = question.variants.slice(0);//copy
+            for (let i = 0; i < 7; i++)
+                answers.push(answers[correctAnswerIndex])
+            return answers[Math.floor(Math.random() * answers.length)];
+        }
+        else if (hintType === Hints.AskTheAudience) {
+
+        }
+
+    }
+    representation() {
+        return this.currentQuestion.representation() + Array.from(this.availableHints).join(" ") + "\n" + `Current score: ${this.score}`;
     }
 }
+
+
+
 
 
 function main() {
@@ -66,9 +92,21 @@ function main() {
         if (question.value === undefined) {
             break;
         }
-        console.log(question.value.representation())
-        const answer = prompt("ANSWER:");
-        game.checkAnswer(answer)
+        console.log(game.representation())
+        let action = prompt("Input action:");
+        if (action === 'FiftyFifty') {
+            game.activateHint(Hints.FiftyFifty);
+            console.log(game.currentQuestion.representation())
+            action = prompt("Input action:");
+
+        }
+        else if (action === 'FriendCall') {
+            let frChoice = game.activateHint(Hints.FriendCall);
+            console.log(`Friend's choice is ${frChoice}`);
+            console.log(game.currentQuestion.representation())
+            action = prompt("Input action:");
+        }
+        game.checkAnswer(action)
 
         if (game.isAlive) {
             console.log('Correct!');
@@ -76,6 +114,7 @@ function main() {
             console.log(`Incorrect! Correct answer is ${question.value.getCorrectAnswer()}`);
             break;
         }
+
     }
 }
 
@@ -116,69 +155,3 @@ class Timer {
 }
 
 main();
-
-
-/*what is your name?
-                Alex
-                Hello, Alex. Let's start the game!
-                1. Q1
-                A: a1, B: a2, C: a3, D:a4
-          a2
-          Correct!
-          2. Q2
-          A: a1, B: a2, C: a3, D:a4
-          a3
-          Incorrect! Correct answer is a4.
-                Restart the game? Yes/No
-          Yes
-          ....*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
