@@ -10,20 +10,21 @@ const Hints = {
 }
 
 class Game {
-        constructor(playerName) {
+    constructor(playerName) {
         this.pool = QuestionGenerator.generateQuestions();
         this.score = 0;
         // this.player = new Player(playerName);
         this.player = 'Andrey';
         this.isAlive = true;
-        this.currentQuestion = new Question();
         this.availableHints = new Set([Hints.FriendCall, Hints.FiftyFifty, Hints.AskTheAudience]);
     };
 
-    checkAnswer(answer) {
-        if (answer === this.currentQuestion.getCorrectAnswer()) {
-            this.score += this.currentQuestion.price;
+    checkAnswer(currentQuestion, answer) {
+        if (answer === currentQuestion.getCorrectAnswer()) {
+            this.score += currentQuestion.price;
         } else {
+            console.log(`correct is ${currentQuestion.getCorrectAnswer()}`)
+            console.log(`given is ${answer}`)
             this.isAlive = false;
         }
 
@@ -64,9 +65,6 @@ class Game {
 
         }
 
-    }
-    representation() {
-        return this.currentQuestion.representation() + Array.from(this.availableHints).join(" ") + "\n" + `Current score: ${this.score}`;
     }
 }
 export default Game;

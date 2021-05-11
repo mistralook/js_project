@@ -9,10 +9,5 @@ class Question {
     getCorrectAnswer() {
         return this.variants[this.correctAnswerIndex];
     }
-
-
-    representation() {
-        return `1. ${this.questionPhrase}\nA: ${this.variants[0]}, B: ${this.variants[1]}, C: ${this.variants[2]}, D: ${this.variants[3]}\n`;
-    }
 }
 export default Question;
