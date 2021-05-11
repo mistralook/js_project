@@ -9,7 +9,7 @@ app.use(express.static('public'));
 
 // start the express web server listening on 8080
 app.listen(3000, () => {
-    console.log('listening on 8080');
+    console.log('listening on 3000');
 });
 
 // serve the homepage

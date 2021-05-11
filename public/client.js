@@ -20,6 +20,7 @@ async function start() {
         }
         resolve("Button is clicked/ Resolve")
     }
+    let questionNumber = 1;
     for (let q of game.start()) {
         if (!game.isAlive)
             break;
@@ -36,8 +37,9 @@ async function start() {
 
             questionArea.textContent = game.currentQuestion.questionPhrase;
 
-
+            document.getElementById("questionNumber").textContent = `Вопрос номер  ${questionNumber++}!`
             for (let i = 0; i < answers.length; i++) {
+
 
                 answers[i].textContent = game.currentQuestion.variants[i];
                 answers[i].addEventListener('click', event => {
@@ -65,6 +67,7 @@ async function start() {
             console.log("breaking/ Finish the game")
             break;
         }
+
     };
     console.log("questions vse")
     Array.from(document.getElementsByClassName("answer")).forEach(el => {
@@ -75,81 +78,3 @@ async function start() {
 
 
 start();
-// GamepadButton.onclick()=>{
-//     check if correct
-//     timer.clear;
-//     show(nextQ)
-// }
-// while (true) {
-//     setTimeout(() => console.log('1'), 30000);
-//     const question = loop.next();
-//     if (question.value === undefined) {
-//         break;
-//     }
-
-//     const questionArea = document.getElementById("question");
-//     const answers = document.getElementsByClassName("answer");
-//     const score = document.getElementById("score");
-
-//     questionArea.textContent = game.currentQuestion.questionPhrase;
-
-//     for (let i = 0; i < answers.length; i++) {
-//         answers[i].textContent = game.currentQuestion.variants[i];
-//         answers[i].addEventListener('click', event => {
-//             game.checkAnswer(answers[i].textContent);
-//         })
-//     }
-
-//     if (game.isAlive) {
-//         // Показываем кнопу зеленым, сет таймаут, нект итератион
-
-//     }
-//     else {
-//         // Показываем красную, зеленым правильную, таймаут, вы проиграли (колво очков), рестарт
-//         break;
-//     }
-// }
-
-
-
-
-
-
-
-
-// function main() {
-//     const prompt = require('prompt-sync')();
-//     const name = prompt('What is your name?');
-//     const player = new Player(name);
-//     const game = new Game(player);
-//     const loop = game.start();
-//     while (true) {
-//         const question = loop.next();
-//         if (question.value === undefined) {
-//             break;
-//         }
-//         console.log(game.representation())
-//         let action = prompt("Input action:");
-//         if (action === 'FiftyFifty') {
-//             game.activateHint(Hints.FiftyFifty);
-//             console.log(game.currentQuestion.representation())
-//             action = prompt("Input action:");
-
-//         }
-//         else if (action === 'FriendCall') {
-//             let frChoice = game.activateHint(Hints.FriendCall);
-//             console.log(`Friend's choice is ${frChoice}`);
-//             console.log(game.currentQuestion.representation())
-//             action = prompt("Input action:");
-//         }
-//         game.checkAnswer(action)
-
-//         if (game.isAlive) {
-//             console.log('Correct!');
-//         } else {
-//             console.log(`Incorrect! Correct answer is ${question.value.getCorrectAnswer()}`);
-//             break;
-//         }
-
-//     }
-// }
