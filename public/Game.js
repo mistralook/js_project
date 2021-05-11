@@ -14,6 +14,7 @@ class Game {
         this.pool = QuestionGenerator.generateQuestions();
         this.score = 0;
         // this.player = new Player(playerName);
+        this.stage = 1;
         this.player = 'Andrey';
         this.isAlive = true;
         this.availableHints = new Set([Hints.FriendCall, Hints.FiftyFifty, Hints.AskTheAudience]);
@@ -32,8 +33,8 @@ class Game {
 
     * start() {
         for (const question of this.pool) {
-            this.currentQuestion = question;
             yield question;
+            this.stage++;
         }
     }
 
