@@ -8,7 +8,7 @@ class Timer {
     displayCountdown() {
         const count = parseInt((this.end - this.now()) / 1000);
         const timer = document.getElementById("timer");
-        timer.textContent =
+        timer.textContent = 
           count > 0 ? (window.requestAnimationFrame(() => this.displayCountdown()), count) : 0;
     }
       
