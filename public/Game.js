@@ -10,8 +10,8 @@ const Hints = {
 }
 
 class Game {
-    constructor(playerName) {
-        this.pool = QuestionGenerator.generateQuestions();
+    constructor(playerName) {          
+        
         this.score = 0;
         // this.player = new Player(playerName);
         this.stage = 1;
@@ -20,6 +20,12 @@ class Game {
         this.isAlive = true;
         this.availableHints = new Set([Hints.FriendCall, Hints.FiftyFifty, Hints.AskTheAudience]);
     };
+
+    async initPool(){
+        const gen = new QuestionGenerator();     
+        this.pool = await gen.generateQuestions();
+        console.log(`${this.pool} -- pool`)
+    }
 
     checkAnswer(currentQuestion, answer) {
         if (answer === currentQuestion.getCorrectAnswer()) {
@@ -32,9 +38,9 @@ class Game {
 
     }
 
-    * start() {
+    * start() {        
         for (const question of this.pool) {
-            this.currentQuestion=question;
+            this.currentQuestion = question;
             yield question;
             this.stage++;
         }
@@ -42,7 +48,7 @@ class Game {
 
     activateHint(hintType) {
         const question = this.currentQuestion;
-        if (!this.availableHints.has(hintType)){
+        if (!this.availableHints.has(hintType)) {
             return;
         }
         else

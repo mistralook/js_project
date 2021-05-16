@@ -3,13 +3,6 @@ const pgp = require('pg-promise')(/* options */)
 console.log(process.env.connStr)
 const db = pgp(process.env.connStr)
 
-// db.one(`INSERT INTO tset_table (name) VALUES ('user');`).catch((error) => {});
-// db.one('SELECT * FROM tset_table LIMIT 1;')
-//     .then(function (data) {
-//         console.log('RECIEVED DATA:', data)
-//   })
-
-
 
 const express = require('express');
 
@@ -25,11 +18,31 @@ app.listen(port, () => {
 
 // serve the homepage
 app.get('/', (req, res) => {
-    res.se
     res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/gameResult', (req, res)=>{
+app.get('/questions.json', async (req, res) => {
+    const questions = []
+    await db.any(`SELECT * FROM questions;`).then(function (data) {
+        for (const record of data)
+        {
+            questions.push({
+                phrase: record["phrase"],
+                vars:
+                    [record["var1"],
+                    record["var2"],
+                    record["var3"],
+                    record["var4"]],
+                cor_ind: record["correct_index"],
+                price: record["price"]
+            })
+        }
+        console.log(questions)
+    }).catch((error) => { });
+    res.json(questions);
+})
+
+app.post('/gameResult', (req, res) => {
     //....
-    res.sendFile(__dirname+'/leaderboard.html')
+    res.sendFile(__dirname + '/leaderboard.html')
 })

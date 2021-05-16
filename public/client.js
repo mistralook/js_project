@@ -12,10 +12,9 @@ function onTimerIsFinished() {
     // removeHandlers();
     Promise.resolve('Timer is finished');
 }
-let checkanswercalledCount = 0;
+
 function onGivenAnswer(timerId, q, playerAnswer) {
     game.checkAnswer(q, playerAnswer);
-    checkanswercalledCount += 1;
 
     if (game.isAlive) {
         // Показываем кнопу зеленым, сет таймаут, нект итератион
@@ -67,6 +66,7 @@ function removeHandlers() {
 }
 
 async function start() {
+    await game.initPool();
     const fiftyfifty = document.getElementById("fiftyfifty");
     fiftyfifty.addEventListener('click', event => {
         const remButtons = game.activateHint(0);
