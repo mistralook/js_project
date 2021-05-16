@@ -8,8 +8,9 @@ const game = new Game('PlayerName');
 
 function onTimerIsFinished() {
     game.isAlive = false;
-    Promise.resolve('Timer is finished');
     console.log("timer is finished")
+    // removeHandlers();
+    Promise.resolve('Timer is finished');
 }
 let checkanswercalledCount = 0;
 function onGivenAnswer(timerId, q, playerAnswer) {
@@ -40,7 +41,7 @@ function createPromise(q) {
         // Хочется один
         const timer = new Timer(roundDuration);
         timer.start();
-        
+
         const questionArea = document.getElementById("question");
         const answers = document.getElementsByClassName("answer");
         questionArea.textContent = q.questionPhrase;
@@ -50,14 +51,13 @@ function createPromise(q) {
             answers[i].textContent = q.variants[i];
             answers[i].addEventListener('click', event => {
                 onGivenAnswer(timerId, q, q.variants[i]);
-                removeHandlers();
+                // removeHandlers(); перенесено в конец раунда, после await promise
+                timer.stop();
                 resolve("Button is clicked/ Resolve");
             });
-            if (answers[i].style.visibility == 'hidden') {
-                answers[i].style.visibility = 'visible';
-            }
+            answers[i].style = standartButtonStyle;
         };
-            
+        
     });
     return promise;
 }
@@ -77,30 +77,28 @@ async function start() {
         document.getElementsByClassName("answer")[remButtons[1]].style.visibility = 'hidden';
         document.getElementById("fiftyfifty").style.display = "None"
     });
-    
+
 
     document.getElementById("callFriend").addEventListener('click', event => {
         let friendsOpinionIndex = game.activateHint(1);
         console.log(`frindIndex is ${friendsOpinionIndex}`);
-        console.log(document.getElementsByClassName("answer"))
+        console.log(document.getElementsByClassName("answer")[friendsOpinionIndex].style.backgroundColor)
         document.getElementsByClassName("answer")[friendsOpinionIndex].style.backgroundColor = 'blue';
         document.getElementById("callFriend").style.display = "None"
     });
     for (const q of game.start()) {
-        if (!game.isAlive) break;
         const promise = createPromise(q);
-        // console.log("after promise")
         let result = await promise;
-        // console.log("after await")
+        removeHandlers();
         if (!game.isAlive) {
             console.log("breaking/ Finish the game")
             break;
         }
-
     };
-
-    removeHandlers();
+    game.isAlive = false;
+    console.log('GAME IS FINISHED')
+    // removeHandlers();
 }
 
-
+const standartButtonStyle = document.getElementsByClassName("answer")[0].style;
 start();
