@@ -42,7 +42,6 @@ class Game {
 
     activateHint(hintType) {
         const question = this.currentQuestion;
-        console.log(hintType)
         if (!this.availableHints.has(hintType)){
             return;
         }
@@ -53,7 +52,6 @@ class Game {
             let twoIncorIndexes = incorrectAnsIndexes
                 .sort(function () { return .5 - Math.random() }) // Shuffle array
                 .slice(0, 2); // Get first 2 items
-            console.log(twoIncorIndexes);
             let incorInd1 = twoIncorIndexes[0];
             let incorInd2 = twoIncorIndexes[1];
             return [incorInd1, incorInd2]
@@ -63,8 +61,8 @@ class Game {
             const answers = question.variants.slice(0);//copy
             for (let i = 0; i < 7; i++)
                 answers.push(answers[correctAnswerIndex])
-            let resWideIndex= Math.floor(Math.random() * (answers.length-1));
-            let ans=answers[resWideIndex];
+            const resWideIndex = Math.floor(Math.random() * (answers.length - 1));
+            const ans = answers[resWideIndex];
             return question.variants.indexOf(ans);
         }
         else if (hintType === Hints.AskTheAudience) {

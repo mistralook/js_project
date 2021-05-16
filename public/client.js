@@ -20,8 +20,6 @@ function onGivenAnswer(timerId, q, playerAnswer) {
     if (game.isAlive) {
         // Показываем кнопу зеленым, сет таймаут, нект итератион
         const timerScore = document.getElementById('timer').textContent;
-        // console.log(`TIMERSCORE IS ${timerScore}`)
-        console.log(`check answer called ${checkanswercalledCount} times`)
         const score = document.getElementById("score");
         game.score += parseInt(timerScore);
         score.textContent = game.score;
@@ -72,17 +70,14 @@ async function start() {
     const fiftyfifty = document.getElementById("fiftyfifty");
     fiftyfifty.addEventListener('click', event => {
         const remButtons = game.activateHint(0);
-        console.log(remButtons);
         document.getElementsByClassName("answer")[remButtons[0]].style.visibility = 'hidden';
         document.getElementsByClassName("answer")[remButtons[1]].style.visibility = 'hidden';
-        document.getElementById("fiftyfifty").style.display = "None"
+        fiftyfifty.style.display = "None"
     });
 
 
     document.getElementById("callFriend").addEventListener('click', event => {
         let friendsOpinionIndex = game.activateHint(1);
-        console.log(`frindIndex is ${friendsOpinionIndex}`);
-        console.log(document.getElementsByClassName("answer")[friendsOpinionIndex].style.backgroundColor)
         document.getElementsByClassName("answer")[friendsOpinionIndex].style.backgroundColor = 'blue';
         document.getElementById("callFriend").style.display = "None"
     });
