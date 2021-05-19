@@ -4,9 +4,13 @@ console.log(process.env.connStr)
 const db = pgp(process.env.connStr)
 
 
+const bodyParser = require("body-parser");
 const express = require('express');
 
 const app = express();
+app.set('view engine', 'ejs');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // serve files from the public directory
 app.use(express.static('public'));
@@ -18,7 +22,7 @@ app.listen(port, () => {
 
 // serve the homepage
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/public/start.html');
 });
 
 app.get('/questions.json', async (req, res) => {
@@ -42,7 +46,19 @@ app.get('/questions.json', async (req, res) => {
     res.json(questions);
 })
 
-app.post('/gameResult', (req, res) => {
-    //....
-    res.sendFile(__dirname + '/leaderboard.html')
-})
+app.get('/game', (req, res) => {
+    const userName = req.query.name;
+    console.log(req);
+    res.render("game",{userName : userName});
+});
+
+app.post('/postResults', async (req, res) => {
+    const data=await req.body;
+    res.send(req.body);
+    const sc = data.score;
+    const plName= data.name;
+    console.log(`recieved score is ${sc}, playerName is ${plName}`)
+    const query=`INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = leaderboard.score + EXCLUDED.score;`;
+    console.log(query);
+    await db.none(query);
+});

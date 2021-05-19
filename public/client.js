@@ -3,7 +3,9 @@ import Hints from './Game.js';
 import Timer from './Timer.js';
 
 const roundDuration = 30000;
-const game = new Game('PlayerName');
+const userName = document.getElementById("userName").textContent;
+console.log(userName);
+const game = new Game(userName);
 
 
 function onTimerIsFinished() {
@@ -11,6 +13,21 @@ function onTimerIsFinished() {
     console.log("timer is finished")
     // removeHandlers();
     Promise.resolve('Timer is finished');
+}
+async function sendResults(){
+    let gameRes = {
+        name: game.playerName,
+        score: game.score
+      };
+      let response = await fetch('/postResults', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(gameRes)
+      });
+      
+      let result = await response.json();
 }
 
 function onGivenAnswer(timerId, q, playerAnswer) {
@@ -92,8 +109,9 @@ async function start() {
     };
     game.isAlive = false;
     console.log('GAME IS FINISHED')
-    // removeHandlers();
+    sendResults();
 }
 
 const standartButtonStyle = document.getElementsByClassName("answer")[0].style;
 start();
+//sendResults();

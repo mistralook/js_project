@@ -16,7 +16,7 @@ class Game {
         // this.player = new Player(playerName);
         this.stage = 1;
         this.currentQuestion;
-        this.player = 'Igor Knayzev';
+        this.playerName = playerName;
         this.isAlive = true;
         this.availableHints = new Set([Hints.FriendCall, Hints.FiftyFifty, Hints.AskTheAudience]);
     };
