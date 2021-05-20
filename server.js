@@ -1,6 +1,5 @@
 const port = 3000;
 const pgp = require('pg-promise')(/* options */)
-console.log(process.env.connStr)
 const db = pgp('postgres://tvngheln:k_HgQg_iP5gMwN6Fnwli5VQSxSlqiKlR@rogue.db.elephantsql.com:5432/tvngheln')
 
 
@@ -25,9 +24,26 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/start.html');
 });
 
+const query = "SELECT * FROM(\n" +
+    "(SELECT * FROM questions\n" +
+    " WHERE price = 100\n" +
+    " ORDER BY RANDOM()\n" +
+    " LIMIT 5)\n" +
+    " UNION\n" +
+    " (SELECT * FROM questions\n" +
+    " WHERE price = 200\n" +
+    " ORDER BY RANDOM()\n" +
+    " LIMIT 5)\n" +
+    " UNION\n" +
+    " (SELECT * FROM questions\n" +
+    " WHERE price = 300\n" +
+    " ORDER BY RANDOM()\n" +
+    " LIMIT 5)\n" +
+    ") as foo ORDER BY price;"
+
 app.get('/questions.json', async (req, res) => {
     const questions = []
-    await db.any(`SELECT * FROM questions;`).then(function (data) {
+    await db.any(query).then(function (data) {
         for (const record of data)
         {
             questions.push({
@@ -41,14 +57,12 @@ app.get('/questions.json', async (req, res) => {
                 price: record["price"]
             })
         }
-        console.log(questions)
     }).catch((error) => { });
     res.json(questions);
 })
 
 app.get('/game', (req, res) => {
     const userName = req.query.name;
-    console.log(req);
     res.render("game",{userName : userName});
 });
 
@@ -57,8 +71,6 @@ app.post('/postResults', async (req, res) => {
     res.send(req.body);
     const sc = data.score;
     const plName= data.name;
-    console.log(`recieved score is ${sc}, playerName is ${plName}`)
     const query=`INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = leaderboard.score + EXCLUDED.score;`;
-    console.log(query);
     await db.none(query);
 });
