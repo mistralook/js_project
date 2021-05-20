@@ -70,7 +70,7 @@ function createPromise(q) {
                 resolve("Button is clicked/ Resolve");
             });
             answers[i].style = standartButtonStyle;
-        };
+        }
         
     });
     return promise;
