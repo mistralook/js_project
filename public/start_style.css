@@ -7,7 +7,7 @@ body {
 
 .upper-menu{
     width: 600px;
-    height: 700px;
+    height: 800px;
     position: absolute;
     top:0;
     bottom: 0;
@@ -18,7 +18,6 @@ body {
 }
 
 .millionaire {
-    height: 1000px;
     color: #111;
     font-family: 'Helvetica Neue', sans-serif;
     font-size: 50px;
@@ -28,7 +27,6 @@ body {
     text-align: center;
     position: relative;
     display: inline-block;
-
 }
 
 .menu {
