@@ -1,6 +1,6 @@
 const port = 3000;
 const pgp = require('pg-promise')(/* options */)
-const db = pgp('postgres://tvngheln:k_HgQg_iP5gMwN6Fnwli5VQSxSlqiKlR@rogue.db.elephantsql.com:5432/tvngheln')
+const db = pgp(process.env.connStr)
 
 
 const bodyParser = require("body-parser");
