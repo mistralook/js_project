@@ -4,14 +4,14 @@ import Timer from './Timer.js';
 
 const roundDuration = 30000;
 const userName = document.getElementById("userName").textContent;
-console.log(userName);
 const game = new Game(userName);
 
 
 function onTimerIsFinished() {
     game.isAlive = false;
     console.log("timer is finished")
-    // removeHandlers();
+    removeHandlers("button");
+    sendResults();
     Promise.resolve('Timer is finished');
 }
 async function sendResults(){
@@ -39,9 +39,10 @@ function onGivenAnswer(timerId, q, playerAnswer) {
         const score = document.getElementById("score");
         game.score += parseInt(timerScore);
         score.textContent = game.score;
-        console.log("button is pressed, answer is right");
+
     }
     else {
+        removeHandlers("button");
         // Показываем красную, зеленым правильную, таймаут, вы проиграли (колво очков), рестарт
         console.log("button is pressed, answer isnt correct");
     }
@@ -50,8 +51,10 @@ function onGivenAnswer(timerId, q, playerAnswer) {
 }
 
 function createPromise(q) {
-    const promise = new Promise((resolve, _) => {
-        let timerId = setTimeout(() => { onTimerIsFinished() }, roundDuration);
+    return new Promise((resolve, _) => {
+        let timerId = setTimeout(() => {
+            onTimerIsFinished()
+        }, roundDuration);
         // Хочется один
         const timer = new Timer(roundDuration);
         timer.start();
@@ -71,12 +74,11 @@ function createPromise(q) {
             });
             answers[i].style = standartButtonStyle;
         }
-        
+
     });
-    return promise;
 }
-function removeHandlers() {
-    Array.from(document.getElementsByClassName("answer")).forEach(el => {
+function removeHandlers(selector) {
+    Array.from(document.querySelectorAll(selector)).forEach(el => {
         let elClone = el.cloneNode(true);
         el.parentNode.replaceChild(elClone, el);
     })
@@ -101,12 +103,12 @@ async function start() {
     for (const q of game.start()) {
         const promise = createPromise(q);
         let result = await promise;
-        removeHandlers();
+        removeHandlers(".answer");
         if (!game.isAlive) {
             console.log("breaking/ Finish the game")
             break;
         }
-    };
+    }
     game.isAlive = false;
     console.log('GAME IS FINISHED')
     sendResults();

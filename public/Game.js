@@ -10,8 +10,7 @@ const Hints = {
 }
 
 class Game {
-    constructor(playerName) {          
-        
+    constructor(playerName) {
         this.score = 0;
         // this.player = new Player(playerName);
         this.stage = 1;
@@ -24,7 +23,6 @@ class Game {
     async initPool(){
         const gen = new QuestionGenerator();     
         this.pool = await gen.generateQuestions();
-        console.log(`${this.pool} -- pool`)
     }
 
     checkAnswer(currentQuestion, answer) {
@@ -54,7 +52,7 @@ class Game {
         else
             this.availableHints.delete(hintType);
         if (hintType === Hints.FiftyFifty) {
-            const incorrectAnsIndexes = [0, 1, 2, 3].filter(x => x != question.correctAnswerIndex)
+            const incorrectAnsIndexes = [0, 1, 2, 3].filter(x => x !== question.correctAnswerIndex)
             let twoIncorIndexes = incorrectAnsIndexes
                 .sort(function () { return .5 - Math.random() }) // Shuffle array
                 .slice(0, 2); // Get first 2 items
