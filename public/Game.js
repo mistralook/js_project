@@ -9,6 +9,8 @@ const Hints = {
     "AskTheAudience": 2
 }
 
+const GuaranteedScore = [300,200,100]
+
 class Game {
     constructor(playerName) {
         this.score = 0;
@@ -32,6 +34,8 @@ class Game {
             console.log(`correct is ${currentQuestion.getCorrectAnswer()}`)
             console.log(`given is ${answer}`)
             this.isAlive = false;
+            const score = GuaranteedScore.filter((element) => element <= this.score)
+            this.score = score.length === 0 ? 0 : score[0];
         }
 
     }
