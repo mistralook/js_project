@@ -1,5 +1,4 @@
 import Game from './Game.js';
-import Hints from './Game.js';
 import Timer from './Timer.js';
 
 const roundDuration = 30000;
@@ -11,7 +10,7 @@ function onTimerIsFinished() {
     game.isAlive = false;
     console.log("timer is finished")
     removeHandlers("button");
-    sendResults();
+    //sendResults();
     Promise.resolve('Timer is finished');
 }
 async function sendResults(){

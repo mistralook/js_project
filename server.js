@@ -61,9 +61,26 @@ app.get('/questions.json', async (req, res) => {
     res.json(questions);
 })
 
+
 app.get('/game', (req, res) => {
     const userName = req.query.name;
     res.render("game",{userName : userName});
+});
+
+
+const queryLeader ='SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10;';
+app.get('/gg', async (req, res) => {
+    const leaderboard = []
+    await db.any(queryLeader).then(function (data) {
+        for (const record of data)
+        {
+            leaderboard.push({
+                name: record["name"],
+                score: record["score"]
+            })
+        }
+    }).catch((error) => { });
+    res.render("leaderboard",{data : leaderboard});
 });
 
 app.post('/postResults', async (req, res) => {
