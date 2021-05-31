@@ -3,29 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Millionaire</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/game_style.css" >
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
-    <h1 id="userName"><%=userName%> </h1>
-    <label>
-        Score:
-        <p id = "score">0</p>
-    </label>
-    <p id="questionNumber">Вопрос номер 1!</p>
-    <textarea id="question"></textarea>
-    <button class="answer">a1</button>
-    <button class="answer">b1</button>
-    <button class="answer">d1</button>
-    <button class="answer">c1</button>
-    <button id = "fiftyfifty">50 на 50</button>
-    <button id = "callFriend">Звонок другу</button>
-    <div class="timer-container">
-        <label for="timer">Секунд</label>
-        <p class="timer" id="timer">5</p>
-    </div>
+    <header id="header">
+        <div id ="leftHeader">
+            <label id="userName"><%=userName%> </label>
+            <div>
+                <label>Вопрос: </label>
+                <label id ="questionNumber">1</label><br>
+            </div>
+            <div>
+                <label>Счёт:</label>
+                <label id = "score">0</label>
+            </div>
+        </div>
+        <div id="timer">
+            30
+        </div>
+        <div id ="rightHeader">
+            <button id = "fiftyfifty"></button>
+            <button id = "callFriend"></button>
+        </div>
 
+
+    </header>
+    <div id="content">
+        <div id="question"></div>
+        <div id = "answersContainer">
+            <button class="answer">a1</button>
+            <button class="answer">b1</button>
+            <button class="answer">d1</button>
+            <button class="answer">c1</button>
+        </div>
+
+
+    </div>
+    <footer id = "footer">
+        <form method="get"  action="/gg">
+            <input type="submit" id="end" style="visibility: hidden" value="End the game">
+        </form>
+    </footer>
 </body>
-<script src="client.js" type="module"></script>
+<script src="/js/client.js" type="module" ></script>
 
 </html>

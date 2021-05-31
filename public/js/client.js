@@ -1,5 +1,6 @@
-import Game from './Game.js';
-import Timer from './Timer.js';
+import Game from '../model/Game.js';
+import Timer from '../model/Timer.js';
+
 
 const roundDuration = 30000;
 const userName = document.getElementById("userName").textContent;
@@ -18,6 +19,8 @@ async function sendResults(){
         name: game.playerName,
         score: game.score
       };
+    ////////////
+    ////////////
       let response = await fetch('/postResults', {
         method: 'POST',
         headers: {
@@ -62,7 +65,7 @@ function createPromise(q) {
         const answers = document.getElementsByClassName("answer");
         questionArea.textContent = q.questionPhrase;
 
-        document.getElementById("questionNumber").textContent = `Вопрос номер  ${game.stage}!`
+        document.getElementById("questionNumber").textContent = game.stage;
         for (let i = 0; i < answers.length; i++) {
             answers[i].textContent = q.variants[i];
             answers[i].addEventListener('click', event => {
@@ -110,7 +113,10 @@ async function start() {
     }
     game.isAlive = false;
     console.log('GAME IS FINISHED')
-    sendResults();
+    await sendResults();
+    document.getElementById("end").style.visibility="visible";
+
+
 }
 
 const standartButtonStyle = document.getElementsByClassName("answer")[0].style;

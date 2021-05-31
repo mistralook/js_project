@@ -21,7 +21,7 @@ app.listen(port, () => {
 
 // serve the homepage
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/start.html');
+    res.sendFile(__dirname + '/views/start.html');
 });
 
 const query = "SELECT * FROM(\n" +
@@ -69,7 +69,7 @@ app.get('/game', (req, res) => {
 
 
 const queryLeader ='SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10;';
-app.get('/gg', async (req, res) => {
+app.get('/gg', async (req, res,next) => {
     const leaderboard = []
     await db.any(queryLeader).then(function (data) {
         for (const record of data)
@@ -80,8 +80,9 @@ app.get('/gg', async (req, res) => {
             })
         }
     }).catch((error) => { });
-    res.render("leaderboard",{data : leaderboard});
-});
+    res.render("leaderboard",{data:leaderboard});
+})//,function(req, res){
+    //res.sendFile(__dirname + '/views/leaderboard.ejs')});
 
 app.post('/postResults', async (req, res) => {
     const data=await req.body;
