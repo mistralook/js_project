@@ -68,21 +68,25 @@ app.get('/game', (req, res) => {
 });
 
 
-const queryLeader ='SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10;';
+const queryLeader ='select row_number() over(order by score desc), *\n' +
+    '           from  ( select * from  leaderboard) filtered_sales\n' +
+    'LIMIT 15;';//TODO: почему то постгрес тупит, доработать через union чтобы выдавало номер строки юзернейма
 app.get('/gg', async (req, res,next) => {
     const leaderboard = []
+    const userName = req.query.user;
     await db.any(queryLeader).then(function (data) {
         for (const record of data)
         {
             leaderboard.push({
+                place:record["row_number"],
                 name: record["name"],
                 score: record["score"]
             })
         }
     }).catch((error) => { });
+
     res.render("leaderboard",{data:leaderboard});
-})//,function(req, res){
-    //res.sendFile(__dirname + '/views/leaderboard.ejs')});
+})
 
 app.post('/postResults', async (req, res) => {
     const data=await req.body;
