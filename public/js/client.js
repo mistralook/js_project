@@ -11,7 +11,6 @@ function onTimerIsFinished() {
     game.isAlive = false;
     console.log("timer is finished")
     removeHandlers("button");
-    //sendResults();
     Promise.resolve('Timer is finished');
 }
 async function sendResults(){
@@ -121,4 +120,3 @@ async function start() {
 
 const standartButtonStyle = document.getElementsByClassName("answer")[0].style;
 start();
-//sendResults();
