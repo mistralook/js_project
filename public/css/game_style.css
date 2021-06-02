@@ -8,7 +8,6 @@
     font-family: 'Helvetica Neue', sans-serif;
 }
 
-
 #leftHeader,
 #rightHeader {
     display: flex;
@@ -16,11 +15,11 @@
 }
 #rightHeader #callFriend{
     background: url("/images/phone.png") no-repeat top;
-    background-size: 150px 200px;
+    background-size: 150px 150px;
 }
 #rightHeader #fiftyfifty{
     background: url("/images/fifty.png") no-repeat top;
-    background-size: 200px 200px;
+    background-size: 150px 150px;
 }
 #timer{
     position: absolute;
@@ -36,8 +35,8 @@
 }
 
 #rightHeader button{
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     border: 2px solid #000;
     line-height:200px;
@@ -76,8 +75,8 @@
     justify-content: center;
     background-color:#fff;
     display:grid;
-    grid-template-columns: 800px 800px;
-    grid-template-rows: 100px 100px;
+    grid-template-columns: 40% 40%;
+    grid-template-rows: 20% 20%;
     grid-row: auto;
     grid-column-gap: 20px;
     grid-row-gap: 20px;

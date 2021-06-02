@@ -18,8 +18,6 @@ async function sendResults(){
         name: game.playerName,
         score: game.score
       };
-    ////////////
-    ////////////
       let response = await fetch('/postResults', {
         method: 'POST',
         headers: {
@@ -48,7 +46,6 @@ function onGivenAnswer(timerId, q, playerAnswer) {
         console.log("button is pressed, answer isnt correct");
     }
     clearInterval(timerId);
-
 }
 
 function createPromise(q) {
@@ -56,7 +53,6 @@ function createPromise(q) {
         let timerId = setTimeout(() => {
             onTimerIsFinished()
         }, roundDuration);
-        // Хочется один
         const timer = new Timer(roundDuration);
         timer.start();
 
@@ -69,7 +65,6 @@ function createPromise(q) {
             answers[i].textContent = q.variants[i];
             answers[i].addEventListener('click', event => {
                 onGivenAnswer(timerId, q, q.variants[i]);
-                // removeHandlers(); перенесено в конец раунда, после await promise
                 timer.stop();
                 resolve("Button is clicked/ Resolve");
             });
@@ -111,9 +106,9 @@ async function start() {
         }
     }
     game.isAlive = false;
-    console.log('GAME IS FINISHED')
     await sendResults();
-    document.getElementById("end").style.visibility="visible";
+    document.getElementById("end")
+        .style.visibility="visible";
 
 
 }

@@ -66,15 +66,28 @@ app.get('/game', (req, res) => {
     const userName = req.query.name;
     res.render("game",{userName : userName});
 });
+const queryCount = "SELECT COUNT(*) FROM leaderboard;";
 
 
-const queryLeader ='select row_number() over(order by score desc), *\n' +
-    '           from  ( select * from  leaderboard) filtered_sales\n' +
-    'LIMIT 15;';//TODO: почему то постгрес тупит, доработать через union чтобы выдавало номер строки юзернейма
+function getQueryLeader(userName) {
+    return  "(select row_number() over(order by score desc), *\n" +
+        "           from  ( select * from  leaderboard) filtered_sales\n" +
+        "LIMIT 15)\n" +
+        "UNION DISTINCT\n" +
+        "SELECT * FROM (select row_number() over(order by score desc), *\n" +
+        "           from  ( select * from  leaderboard) filtered_sales\n" +
+        ") as foo\n" +
+        `WHERE name ='${userName}'\n` +
+        "ORDER BY score DESC"
+}
+
+
+
 app.get('/gg', async (req, res,next) => {
     const leaderboard = []
     const userName = req.query.user;
-    await db.any(queryLeader).then(function (data) {
+    const leaderboardCount = await db.any(queryCount).catch((error) => { });
+    await db.any(getQueryLeader(userName)).then(function (data) {
         for (const record of data)
         {
             leaderboard.push({
@@ -84,8 +97,8 @@ app.get('/gg', async (req, res,next) => {
             })
         }
     }).catch((error) => { });
-
-    res.render("leaderboard",{data:leaderboard});
+    const inTop = leaderboard.length === Math.min(leaderboardCount[0].count, 15);
+    res.render("leaderboard",{data:leaderboard, n:leaderboard.length, inTop:inTop,userName:userName});
 })
 
 app.post('/postResults', async (req, res) => {
@@ -93,6 +106,7 @@ app.post('/postResults', async (req, res) => {
     res.send(req.body);
     const sc = data.score;
     const plName= data.name;
-    const query=`INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = leaderboard.score + EXCLUDED.score;`;
+    const query=`INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = 
+        case when leaderboard.score > EXCLUDED.score then leaderboard.score else EXCLUDED.score end;`;
     await db.none(query);
 });

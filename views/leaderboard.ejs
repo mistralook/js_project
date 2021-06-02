@@ -13,19 +13,34 @@
         <th>Имя</th>
         <th>Очки</th>
     </tr>
-    <% for (var i = 0; i < 15; i++) { %>
+    <% for (var i = 0; i < n-1 ; i++) { %>
         <tr>
             <td><%= data[i].place %></td>
             <td><%= data[i].name %></td>
             <td><%= data[i].score %></td>
         </tr>
     <% } %>
+    <% if(!inTop) {%>
+        <tr>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+    <% } %>
+    <tr>
+        <td><%= data[n-1].place %></td>
+        <td><%= data[n-1].name %></td>
+        <td><%= data[n-1].score %></td>
+    </tr>
+
 </table>
-<button>
-    Начать игру заново
-</button>
-
+    <form method="get" action="/game">
+        <button type="submit" name="name" value=<%=userName%> > Начать заново</button>
+    </form>
+<script>
+    const userName = <%-JSON.stringify(userName)%>;
+    const td =[...document.getElementsByTagName("td")].filter(item => item.innerText === userName)[0];
+    [td.parentElement][0].style.background="#82de89";
+</script>
 </body>
-
-
 </html>
