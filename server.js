@@ -83,10 +83,11 @@ function getQueryLeader(userName) {
 
 
 
-app.get('/gg', async (req, res,next) => {
+app.get('/leaderboard', async (req, res,next) => {
     const leaderboard = []
     const userName = req.query.user;
     const leaderboardCount = await db.any(queryCount).catch((error) => { });
+
     await db.any(getQueryLeader(userName)).then(function (data) {
         for (const record of data)
         {
@@ -103,6 +104,9 @@ app.get('/gg', async (req, res,next) => {
 
 app.post('/postResults', async (req, res) => {
     const data=await req.body;
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+    res.setHeader("Referrer-Policy","strict-origin-when-cross-origin")
     res.send(req.body);
     const sc = data.score;
     const plName= data.name;

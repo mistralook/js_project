@@ -24,8 +24,8 @@
             30
         </div>
         <div id ="rightHeader">
-            <button id = "fiftyfifty"></button>
-            <button id = "callFriend"></button>
+            <button class ="hints" id = "fiftyfifty"></button>
+            <button class ="hints" id = "callFriend"></button>
         </div>
 
 
@@ -38,12 +38,10 @@
             <button class="answer">d1</button>
             <button class="answer">c1</button>
         </div>
-
-
     </div>
     <footer id = "footer">
-        <form method="get"  action="/gg">
-            <button id = "end" name="user" type="submit" value=<%=userName%> style="visibility: hidden">Результаты</button>
+        <form method="get"  action="/leaderboard">
+            <button id = "end" name="user" type="submit" value=<%=userName%>  >Завершить</button>
         </form>
     </footer>
 </body>

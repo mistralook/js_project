@@ -1,0 +1,28 @@
+body{
+    background: linear-gradient(to right, #4b2c7d, #2c558e,#4b2c7d);
+    font-size: 30px;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #ffffff;
+
+}
+
+td{
+    text-align: center;
+}
+
+#newStart{
+
+    width: 55%;
+    height: 80%;
+    background-color:#333;
+    padding:20px;
+    border-radius:10px;
+    color:#fff;
+    font-size: 30px;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+form{
+    margin-top: 5px;
+    text-align: center;
+    height: 13%;
+}

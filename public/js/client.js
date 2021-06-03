@@ -13,6 +13,8 @@ function onTimerIsFinished() {
     removeHandlers("button");
     Promise.resolve('Timer is finished');
 }
+
+
 async function sendResults(){
     let gameRes = {
         name: game.playerName,
@@ -26,27 +28,62 @@ async function sendResults(){
         body: JSON.stringify(gameRes)
       });
       
-      let result = await response.json();
+      await response.json();
 }
 
-function onGivenAnswer(timerId, q, playerAnswer) {
-    game.checkAnswer(q, playerAnswer);
+document.getElementById("end").onclick=async ()=>{
+    console.log("in get element")
+    await sendResults();
+};
 
+
+
+
+async function wait(time){
+    await new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
+
+async function onGivenAnswer(timerId, q, playerAnswer) {
+    game.checkAnswer(q, playerAnswer);
+    const correctAnswer = q.getCorrectAnswer();
     if (game.isAlive) {
         // Показываем кнопу зеленым, сет таймаут, нект итератион
+        const button =[...document.getElementsByClassName("answer")]
+            .filter(butt => butt.textContent === correctAnswer)[0];
+        button.style.background="#237d11";
+        button.style.pointerEvents = "none";
         const timerScore = document.getElementById('timer').textContent;
         const score = document.getElementById("score");
         game.score += parseInt(timerScore);
         score.textContent = game.score;
 
+
     }
     else {
-        removeHandlers("button");
+        const button =[...document.getElementsByClassName("answer")]
+            .filter(butt => butt.textContent === playerAnswer)[0];
+        button.style.background="#aa1a1a";
+        button.style.pointerEvents = "none";
+        const button1 =[...document.getElementsByClassName("answer")]
+          .filter(butt => butt.textContent === correctAnswer)[0];
+        button1.style.background="#237d11";
+        button1.style.pointerEvents = "none";
+        removeHandlers(".hints")
+        //removeHandlers("button");
         // Показываем красную, зеленым правильную, таймаут, вы проиграли (колво очков), рестарт
         console.log("button is pressed, answer isnt correct");
     }
+    await wait(2000);
     clearInterval(timerId);
 }
+
+
+
+
 
 function createPromise(q) {
     return new Promise((resolve, _) => {
@@ -63,8 +100,8 @@ function createPromise(q) {
         document.getElementById("questionNumber").textContent = game.stage;
         for (let i = 0; i < answers.length; i++) {
             answers[i].textContent = q.variants[i];
-            answers[i].addEventListener('click', event => {
-                onGivenAnswer(timerId, q, q.variants[i]);
+            answers[i].addEventListener('click', async event => {
+                await onGivenAnswer(timerId, q, q.variants[i])
                 timer.stop();
                 resolve("Button is clicked/ Resolve");
             });
@@ -106,7 +143,7 @@ async function start() {
         }
     }
     game.isAlive = false;
-    await sendResults();
+    //await sendResults();
     document.getElementById("end")
         .style.visibility="visible";
 

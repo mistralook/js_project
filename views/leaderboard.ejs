@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Millionaire</title>
+    <link rel="stylesheet" href="/css/leader_style.css">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -34,13 +35,15 @@
     </tr>
 
 </table>
-    <form method="get" action="/game">
-        <button type="submit" name="name" value=<%=userName%> > Начать заново</button>
+
+    <form  method="get" action="/game">
+        <button id = "newStart" type="submit" name="name" value=<%=userName%> > Начать заново</button>
+
     </form>
 <script>
     const userName = <%-JSON.stringify(userName)%>;
     const td =[...document.getElementsByTagName("td")].filter(item => item.innerText === userName)[0];
-    [td.parentElement][0].style.background="#82de89";
+    [td.parentElement][0].style.background="#e0b139";
 </script>
 </body>
 </html>
