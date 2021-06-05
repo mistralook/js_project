@@ -1,4 +1,4 @@
-const port = 3000;
+const port = process.env.PORT || 80;
 const pgp = require('pg-promise')(/* options */)
 const db = pgp(process.env.connStr)
 
@@ -11,15 +11,12 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// serve files from the public directory
 app.use(express.static('public'));
 
-// start the express web server listening on 8080
 app.listen(port, () => {
     console.log('listening on 3000');
 });
 
-// serve the homepage
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/start.html');
 });
@@ -44,8 +41,7 @@ const query = "SELECT * FROM(\n" +
 app.get('/questions.json', async (req, res) => {
     const questions = []
     await db.any(query).then(function (data) {
-        for (const record of data)
-        {
+        for (const record of data) {
             questions.push({
                 phrase: record["phrase"],
                 vars:
@@ -64,31 +60,30 @@ app.get('/questions.json', async (req, res) => {
 
 app.get('/game', (req, res) => {
     const userName = req.query.name;
-    res.render("game",{userName : userName});
+    res.render("game", { userName: userName });
 });
 
 
-const queryLeader ='SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10;';
-app.get('/gg', async (req, res,next) => {
+const queryLeader = 'SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10;';
+app.get('/gg', async (req, res, next) => {
     const leaderboard = []
     await db.any(queryLeader).then(function (data) {
-        for (const record of data)
-        {
+        for (const record of data) {
             leaderboard.push({
                 name: record["name"],
                 score: record["score"]
             })
         }
     }).catch((error) => { });
-    res.render("leaderboard",{data:leaderboard});
+    res.render("leaderboard", { data: leaderboard });
 })//,function(req, res){
-    //res.sendFile(__dirname + '/views/leaderboard.ejs')});
+//res.sendFile(__dirname + '/views/leaderboard.ejs')});
 
 app.post('/postResults', async (req, res) => {
-    const data=await req.body;
+    const data = await req.body;
     res.send(req.body);
     const sc = data.score;
-    const plName= data.name;
-    const query=`INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = leaderboard.score + EXCLUDED.score;`;
+    const plName = data.name;
+    const query = `INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = leaderboard.score + EXCLUDED.score;`;
     await db.none(query);
 });
