@@ -84,7 +84,7 @@ function getQueryLeader(userName) {
 
 app.get('/leaderboard', async (req, res,next) => {
     const leaderboard = []
-    const userName = req.query.user;
+    const userName = decodeURI(req.query.user);
     const leaderboardCount = await db.any(queryCount).catch((error) => { });
 
     await db.any(getQueryLeader(userName)).then(function (data) {
@@ -98,7 +98,7 @@ app.get('/leaderboard', async (req, res,next) => {
         }
     }).catch((error) => { });
     const inTop = leaderboard.length === Math.min(leaderboardCount[0].count, 15);
-    res.render("leaderboard",{data:leaderboard, n:leaderboard.length, inTop:inTop,userName:userName});
+    res.render("leaderboard",{data:leaderboard, n:leaderboard.length, inTop:inTop, userName:userName});
 })
 
 app.post('/postResults', async (req, res) => {
@@ -108,7 +108,7 @@ app.post('/postResults', async (req, res) => {
     res.setHeader("Referrer-Policy","strict-origin-when-cross-origin")
     res.send(req.body);
     const sc = data.score;
-    const plName= data.name;
+    const plName= decodeURI(data.name);
     const query=`INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = 
         case when leaderboard.score > EXCLUDED.score then leaderboard.score else EXCLUDED.score end;`;
     await db.none(query);

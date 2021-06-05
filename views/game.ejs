@@ -10,7 +10,7 @@
 <body>
     <header id="header">
         <div id ="leftHeader">
-            <label id="userName"><%=userName%></label>
+            <label id="userName"><%=decodeURI(userName)%></label>
             <div>
                 <label>Вопрос: </label>
                 <label id ="questionNumber">1</label><br>
@@ -36,7 +36,6 @@
     </div>
 
     <div id="content">
-
         <div id="question"></div>
         <div id = "answersContainer">
             <button class="answer">a1</button>
@@ -47,7 +46,7 @@
     </div>
     <footer id = "footer">
         <form method="get"  action="/leaderboard">
-            <button id = "end" name="user" type="submit" value=<%=userName%>  >Завершить</button>
+            <button id = "end" name="user" type="submit" value=<%=encodeURI(userName)%> >Завершить</button>
         </form>
     </footer>
 </body>
