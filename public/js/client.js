@@ -7,19 +7,35 @@ const userName = document.getElementById("userName").textContent;
 const game = new Game(userName);
 
 
+const modalContainer = document.querySelector(".modal-container")
+const gameFinishedEvent = new Event('gameFinished');
+
+
+modalContainer.addEventListener("gameFinished", function () {
+    modalContainer.style.display = "block"
+    modalContainer.style.visibility="visible"
+    if(game.isAlive){
+        const elem = document.getElementById("resultText");
+        elem.textContent = "Вы выиграли";
+        elem.style.background = "green";
+    }else document.getElementById("resultText").textContent="LOSE";
+
+})
+
+
 function onTimerIsFinished() {
     game.isAlive = false;
-    console.log("timer is finished")
-    removeHandlers("button");
+    modalContainer.dispatchEvent(gameFinishedEvent);
+    removeHandlers(".answer");
     Promise.resolve('Timer is finished');
 }
-
 
 async function sendResults(){
     let gameRes = {
         name: game.playerName,
         score: game.score
       };
+    console.log(gameRes);
       let response = await fetch('/postResults', {
         method: 'POST',
         headers: {
@@ -27,17 +43,13 @@ async function sendResults(){
         },
         body: JSON.stringify(gameRes)
       });
-      
       await response.json();
 }
 
+
 document.getElementById("end").onclick=async ()=>{
-    console.log("in get element")
     await sendResults();
 };
-
-
-
 
 async function wait(time){
     await new Promise(resolve => {
@@ -51,7 +63,7 @@ async function onGivenAnswer(timerId, q, playerAnswer) {
     game.checkAnswer(q, playerAnswer);
     const correctAnswer = q.getCorrectAnswer();
     if (game.isAlive) {
-        // Показываем кнопу зеленым, сет таймаут, нект итератион
+
         const button =[...document.getElementsByClassName("answer")]
             .filter(butt => butt.textContent === correctAnswer)[0];
         button.style.background="#237d11";
@@ -75,14 +87,10 @@ async function onGivenAnswer(timerId, q, playerAnswer) {
         removeHandlers(".hints")
         //removeHandlers("button");
         // Показываем красную, зеленым правильную, таймаут, вы проиграли (колво очков), рестарт
-        console.log("button is pressed, answer isnt correct");
     }
     await wait(2000);
     clearInterval(timerId);
 }
-
-
-
 
 
 function createPromise(q) {
@@ -101,15 +109,19 @@ function createPromise(q) {
         for (let i = 0; i < answers.length; i++) {
             answers[i].textContent = q.variants[i];
             answers[i].addEventListener('click', async event => {
+                removeHandlers(".answer");
                 await onGivenAnswer(timerId, q, q.variants[i])
                 timer.stop();
+
                 resolve("Button is clicked/ Resolve");
             });
             answers[i].style = standartButtonStyle;
         }
-
     });
 }
+
+const standartButtonStyle = document.getElementsByClassName("answer")[0].style;
+
 function removeHandlers(selector) {
     Array.from(document.querySelectorAll(selector)).forEach(el => {
         let elClone = el.cloneNode(true);
@@ -142,13 +154,8 @@ async function start() {
             break;
         }
     }
+    modalContainer.dispatchEvent(gameFinishedEvent);
     game.isAlive = false;
-    //await sendResults();
-    document.getElementById("end")
-        .style.visibility="visible";
-
-
 }
 
-const standartButtonStyle = document.getElementsByClassName("answer")[0].style;
 start();

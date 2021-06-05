@@ -1,5 +1,3 @@
-import Question from './Question.js';
-import Player from './Player.js';
 import QuestionGenerator from './QuestionGenerator.js'
 
 
@@ -9,12 +7,11 @@ const Hints = {
     "AskTheAudience": 2
 }
 
-const GuaranteedScore = [300,200,100]
+const GuaranteedScore = [0,100,1000,2000]
 
 class Game {
     constructor(playerName) {
         this.score = 0;
-        // this.player = new Player(playerName);
         this.stage = 1;
         this.currentQuestion;
         this.playerName = playerName;
@@ -31,12 +28,11 @@ class Game {
         if (answer === currentQuestion.getCorrectAnswer()) {
             this.score += currentQuestion.price;
         } else {
-            console.log(`correct is ${currentQuestion.getCorrectAnswer()}`)
-            console.log(`given is ${answer}`)
+            const guarantedScore = GuaranteedScore.filter(item => item <= this.score);
+            this.score = guarantedScore[guarantedScore.length - 1];
+            console.log(this.score);
             this.isAlive = false;
-
         }
-
     }
 
     * start() {        
@@ -57,15 +53,15 @@ class Game {
         if (hintType === Hints.FiftyFifty) {
             const incorrectAnsIndexes = [0, 1, 2, 3].filter(x => x !== question.correctAnswerIndex)
             let twoIncorIndexes = incorrectAnsIndexes
-                .sort(function () { return .5 - Math.random() }) // Shuffle array
-                .slice(0, 2); // Get first 2 items
+                .sort(function () { return .5 - Math.random() })
+                .slice(0, 2);
             let incorInd1 = twoIncorIndexes[0];
             let incorInd2 = twoIncorIndexes[1];
             return [incorInd1, incorInd2]
         }
         else if (hintType === Hints.FriendCall) {
             const correctAnswerIndex = question.correctAnswerIndex;
-            const answers = question.variants.slice(0);//copy
+            const answers = question.variants.slice(0);
             for (let i = 0; i < 7; i++)
                 answers.push(answers[correctAnswerIndex])
             const resWideIndex = Math.floor(Math.random() * (answers.length - 1));
@@ -73,9 +69,7 @@ class Game {
             return question.variants.indexOf(ans);
         }
         else if (hintType === Hints.AskTheAudience) {
-
         }
-
     }
 }
 export default Game;

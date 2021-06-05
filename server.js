@@ -11,15 +11,14 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// serve files from the public directory
+
 app.use(express.static('public'));
 
-// start the express web server listening on 8080
+
 app.listen(port, () => {
     console.log('listening on 3000');
 });
 
-// serve the homepage
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/start.html');
 });
