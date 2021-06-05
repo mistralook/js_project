@@ -11,7 +11,9 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
 app.use(express.static('public'));
+
 
 app.listen(port, () => {
     console.log('listening on 3000');
@@ -41,7 +43,8 @@ const query = "SELECT * FROM(\n" +
 app.get('/questions.json', async (req, res) => {
     const questions = []
     await db.any(query).then(function (data) {
-        for (const record of data) {
+        for (const record of data)
+        {
             questions.push({
                 phrase: record["phrase"],
                 vars:
@@ -60,7 +63,7 @@ app.get('/questions.json', async (req, res) => {
 
 app.get('/game', (req, res) => {
     const userName = req.query.name;
-    res.render("game", { userName: userName });
+    res.render("game",{userName : userName});
 });
 const queryCount = "SELECT COUNT(*) FROM leaderboard;";
 
@@ -79,7 +82,6 @@ function getQueryLeader(userName) {
 
 
 
-
 app.get('/leaderboard', async (req, res,next) => {
     const leaderboard = []
     const userName = req.query.user;
@@ -95,15 +97,19 @@ app.get('/leaderboard', async (req, res,next) => {
             })
         }
     }).catch((error) => { });
-    res.render("leaderboard", { data: leaderboard });
-})//,function(req, res){
-//res.sendFile(__dirname + '/views/leaderboard.ejs')});
+    const inTop = leaderboard.length === Math.min(leaderboardCount[0].count, 15);
+    res.render("leaderboard",{data:leaderboard, n:leaderboard.length, inTop:inTop,userName:userName});
+})
 
 app.post('/postResults', async (req, res) => {
-    const data = await req.body;
+    const data=await req.body;
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
+    res.setHeader("Referrer-Policy","strict-origin-when-cross-origin")
     res.send(req.body);
     const sc = data.score;
-    const plName = data.name;
-    const query = `INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = leaderboard.score + EXCLUDED.score;`;
+    const plName= data.name;
+    const query=`INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = 
+        case when leaderboard.score > EXCLUDED.score then leaderboard.score else EXCLUDED.score end;`;
     await db.none(query);
 });
