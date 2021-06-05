@@ -2,75 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Millionaire</title>
+    <title>Миллионер</title>
+    <link rel="stylesheet" href="/css/leader_style.css">
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
-
 <body>
 
 <table border="1" width="100%" cellpadding="5">
     <tr>
+        <th>Место</th>
         <th>Имя</th>
-        <th>Результат</th>
+        <th>Очки</th>
     </tr>
+    <% for (var i = 0; i < n-1 ; i++) { %>
+        <tr>
+            <td><%= data[i].place %></td>
+            <td><%= data[i].name %></td>
+            <td><%= data[i].score %></td>
+        </tr>
+    <% } %>
+    <% if(!inTop) {%>
+        <tr>
+            <td>...</td>
+            <td>...</td>
+            <td>...</td>
+        </tr>
+    <% } %>
     <tr>
-        <td><%=data[0].name%></td>
-        <td><%=data[0].score%></td>
-
-
+        <td><%= data[n-1].place %></td>
+        <td><%= data[n-1].name %></td>
+        <td><%= data[n-1].score %></td>
     </tr>
-    <tr>
-        <td><%=data[1].name%></td>
-        <td><%=data[1].score%></td>
 
-
-    </tr>
-    <tr>
-        <td><%=data[2].name%></td>
-        <td><%=data[2].score%></td>
-
-
-    </tr>
-    <tr>
-        <td><%=data[3].name%></td>
-        <td><%=data[3].score%></td>
-
-
-    </tr>
-    <tr>
-        <td><%=data[4].name%></td>
-        <td><%=data[4].score%></td>
-
-
-    </tr>
-    <tr>
-        <td><%=data[5].name%></td>
-        <td><%=data[5].score%></td>
-
-
-    </tr>
-    <tr>
-        <td><%=data[6].name%></td>
-        <td><%=data[6].score%></td>
-
-
-    </tr>
-    <tr>
-        <td><%=data[7].name%></td>
-        <td><%=data[7].score%></td>
-
-    </tr>
-    <tr>
-        <td><%=data[8].name%></td>
-        <td><%=data[8].score%></td>
-    </tr>
 </table>
-<button>
-    Начать игру заново
-</button>
-</div>
+    <form  method="get" action="/game">
+        <button id = "newStart" type="submit" name="name" value=<%=userName%> > Начать заново</button>
 
+    </form>
+<script>
+    const userName = <%-JSON.stringify(userName)%>;
+    const td =[...document.getElementsByTagName("td")].filter(item => item.innerText === userName)[0];
+    [td.parentElement][0].style.background="#e0b139";
+</script>
 </body>
-
-
 </html>

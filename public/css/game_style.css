@@ -1,6 +1,45 @@
+body{
+    background: linear-gradient(to right, #4b2c7d, #2c558e,#4b2c7d);
+    font-size: 30px;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #ffffff;
+}
+
+.modal-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    display: flex;
+    text-align: center;
+    /*-webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);*/
+    /*-moz-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);*/
+    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    background-color: rgba(0,0,0,.7);
+}
+.modal-container div{
+    line-height : 300px;
+    width: 650px;
+    text-align: center;
+    height: 300px;
+    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    border: 2px solid black;
+    background-color: black;
+    margin: 0;
+    font-size: 60px;
+    position: absolute;
+    font-family: 'Helvetica Neue', sans-serif;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    text-transform:uppercase;
+}
+
 #header{
     display: flex;
-    background: rgba(24,0,143,0.56);
     justify-content : space-between;
     padding: 2%;
     font-size: 35px;
@@ -8,19 +47,26 @@
     font-family: 'Helvetica Neue', sans-serif;
 }
 
-
 #leftHeader,
 #rightHeader {
     display: flex;
     margin: 5px;
+    width: 16vw;
+}
+#rightHeader{
+    justify-content: space-between;
+    width: 17vw;
 }
 #rightHeader #callFriend{
     background: url("/images/phone.png") no-repeat top;
-    background-size: 150px 200px;
+    background-size: 100% 100%;
+    cursor: pointer;
+
 }
 #rightHeader #fiftyfifty{
     background: url("/images/fifty.png") no-repeat top;
-    background-size: 200px 200px;
+    background-size: 100% 100%;
+    cursor: pointer;
 }
 #timer{
     position: absolute;
@@ -36,10 +82,10 @@
 }
 
 #rightHeader button{
-    width: 200px;
-    height: 200px;
+    width: 49%;
+    height: 100%;
     border-radius: 50%;
-    border: 2px solid #000;
+
     line-height:200px;
     text-align:center;
     font-size: 50px;
@@ -65,33 +111,85 @@
     padding: 2%;
     text-align: center;
     border-radius: 10px;
-    border-color: #111111;
+    border-color: #ffffff;
     border-width: medium;
     border-style:solid;
+    background-color:#333;
 }
 
 #answersContainer{
+    margin-top: 1%;
     overflow-wrap: break-word;
-    margin-top: 10px;
+
     justify-content: center;
-    background-color:#fff;
     display:grid;
-    grid-template-columns: 800px 800px;
-    grid-template-rows: 100px 100px;
+    grid-template-columns: 40% 40%;
+    grid-template-rows: 50% 50%;
     grid-row: auto;
     grid-column-gap: 20px;
     grid-row-gap: 20px;
 }
 
-#answersContainer .answer{
+#answersContainer .answer {
     overflow-wrap: break-word;
-    background-color:#333;
-    padding:20px;
-    border-radius:10px;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:35px;
-    font-family:sans-serif;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    border-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    font-family: 'Helvetica Neue', sans-serif;
+    border-width: medium;
+    border-style: solid;
+
+
+
+    box-sizing: border-box;
+    appearance: none;
+    cursor: pointer;
+    align-self: center;
+    font-weight: 400;
+    line-height: 1;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+#answersContainer .answer:hover, #answersContainer .answer:focus {
+    color: #fff;
+    outline: 0;
+}
+
+#answersContainer .answer {
+    -webkit-transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+#answersContainer .answer:hover {
+    box-shadow: 0 0 40px 40px #eec15d inset;
+}
+
+
+#footer form{
+    width: 20%;
+    height: 15%;
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+    align-items: center;
+}
+#footer button{
+    font-size: 30px;
+    font-family: 'Helvetica Neue', sans-serif;
+    height: 65%;
+    width: 90%;
+    border-radius: 10px;
+    background-color: #eec15d;
+    border-width: medium;
+    border-style:solid;
+    border-color: white;
+    cursor: pointer;
 }

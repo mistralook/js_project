@@ -62,14 +62,34 @@ app.get('/game', (req, res) => {
     const userName = req.query.name;
     res.render("game", { userName: userName });
 });
+const queryCount = "SELECT COUNT(*) FROM leaderboard;";
 
 
-const queryLeader = 'SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10;';
-app.get('/gg', async (req, res, next) => {
+function getQueryLeader(userName) {
+    return  "(select row_number() over(order by score desc), *\n" +
+        "           from  ( select * from  leaderboard) filtered_sales\n" +
+        "LIMIT 15)\n" +
+        "UNION DISTINCT\n" +
+        "SELECT * FROM (select row_number() over(order by score desc), *\n" +
+        "           from  ( select * from  leaderboard) filtered_sales\n" +
+        ") as foo\n" +
+        `WHERE name ='${userName}'\n` +
+        "ORDER BY score DESC"
+}
+
+
+
+
+app.get('/leaderboard', async (req, res,next) => {
     const leaderboard = []
-    await db.any(queryLeader).then(function (data) {
-        for (const record of data) {
+    const userName = req.query.user;
+    const leaderboardCount = await db.any(queryCount).catch((error) => { });
+
+    await db.any(getQueryLeader(userName)).then(function (data) {
+        for (const record of data)
+        {
             leaderboard.push({
+                place:record["row_number"],
                 name: record["name"],
                 score: record["score"]
             })

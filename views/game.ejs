@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Millionaire</title>
+    <title>Миллионер</title>
     <link rel="stylesheet" href="/css/game_style.css" >
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
@@ -10,7 +10,7 @@
 <body>
     <header id="header">
         <div id ="leftHeader">
-            <label id="userName"><%=userName%> </label>
+            <label id="userName"><%=userName%></label>
             <div>
                 <label>Вопрос: </label>
                 <label id ="questionNumber">1</label><br>
@@ -24,13 +24,19 @@
             30
         </div>
         <div id ="rightHeader">
-            <button id = "fiftyfifty"></button>
-            <button id = "callFriend"></button>
+            <button class ="hints" id = "fiftyfifty"></button>
+            <button class ="hints" id = "callFriend"></button>
+        </div>
+    </header>
+
+    <div class="modal-container" style="visibility: hidden">
+        <div id="resultText">
         </div>
 
+    </div>
 
-    </header>
     <div id="content">
+
         <div id="question"></div>
         <div id = "answersContainer">
             <button class="answer">a1</button>
@@ -38,15 +44,12 @@
             <button class="answer">d1</button>
             <button class="answer">c1</button>
         </div>
-
-
     </div>
     <footer id = "footer">
-        <form method="get"  action="/gg">
-            <input type="submit" id="end" style="visibility: hidden" value="End the game">
+        <form method="get"  action="/leaderboard">
+            <button id = "end" name="user" type="submit" value=<%=userName%>  >Завершить</button>
         </form>
     </footer>
 </body>
 <script src="/js/client.js" type="module" ></script>
-
 </html>

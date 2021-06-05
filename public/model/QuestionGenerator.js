@@ -16,7 +16,6 @@ class QuestionGenerator {
         const resultQuestions = [];
         let response = await fetch('/questions.json');
         let data = await response.json();
-        console.log(data);
         for (let jq of data) {
             const rightAnswer = jq["vars"][jq["cor_ind"]]
             const vars = shuffle(jq["vars"])
