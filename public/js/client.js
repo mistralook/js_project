@@ -96,7 +96,7 @@ async function onGivenAnswer(timerId, q, playerAnswer) {
 function createPromise(q) {
     return new Promise((resolve, _) => {
         let timerId = setTimeout(() => {
-            onTimerIsFinished()
+            onTimerIsFinished()//обёртка вроде не нужна?
         }, roundDuration);
         const timer = new Timer(roundDuration);
         timer.start();

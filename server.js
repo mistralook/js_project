@@ -1,4 +1,4 @@
-const port = 3000;
+const port = process.env.PORT || 80;
 const pgp = require('pg-promise')(/* options */)
 const db = pgp(process.env.connStr)
 
