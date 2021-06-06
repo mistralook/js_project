@@ -75,7 +75,7 @@ function getQueryLeader(userName) {
         "           from  ( select * from  leaderboard) filtered_sales\n" +
         ") as foo\n" +
         `WHERE name ='${userName}'\n` +
-        "ORDER BY score DESC"
+        "ORDER BY row_number"
 }
 
 const questionsQuery = "SELECT * FROM(\n" +
