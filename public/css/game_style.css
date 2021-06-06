@@ -9,31 +9,28 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
-
     top: 0;
     left: 0;
     display: flex;
     text-align: center;
-    /*-webkit-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);*/
-    /*-moz-box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);*/
-    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 7px 7px 5px 0 rgba(50, 50, 50, 0.75);
     background-color: rgba(0,0,0,.7);
 }
+
 .modal-container div{
     line-height : 300px;
     width: 650px;
     text-align: center;
     height: 300px;
-    box-shadow: 7px 7px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 7px 7px 5px 0 rgba(50, 50, 50, 0.75);
     border: 2px solid black;
     background-color: black;
-    margin: 0;
     font-size: 60px;
     position: absolute;
     font-family: 'Helvetica Neue', sans-serif;
     top: 50%;
     left: 50%;
-    margin-right: -50%;
+    margin: 0 -50% 0 0;
     transform: translate(-50%, -50%);
     text-transform:uppercase;
 }
@@ -46,26 +43,39 @@ body{
     font-weight:bolder;
     font-family: 'Helvetica Neue', sans-serif;
 }
+
 #leftHeader,
 #rightHeader {
     display: flex;
     margin: 5px;
     width: 16vw;
 }
+
 #rightHeader{
     justify-content: space-between;
-    width: 17vw;
+    width: 30vw;
+    height: 18vw;
 }
+
+@media screen and (min-aspect-ratio: 1/1) {
+    #rightHeader {
+        width: 30vh;
+        height: 18vh;
+    }
+}
+
 #rightHeader #callFriend{
     background: url("/images/phone.png") no-repeat top;
     background-size: 100% 100%;
     cursor: pointer;
 }
+
 #rightHeader #fiftyfifty{
     background: url("/images/fifty.png") no-repeat top;
     background-size: 100% 100%;
     cursor: pointer;
 }
+
 #timer{
     position: absolute;
     width: 200px;
@@ -78,6 +88,7 @@ body{
     align-items: center;
     margin : -30px -100px;
 }
+
 #rightHeader button{
     width: 49%;
     height: 100%;
@@ -86,10 +97,12 @@ body{
     text-align:center;
     font-size: 50px;
 }
+
 #leftHeader {
     padding-top: 30px;
     flex-direction: column;
 }
+
 #timer{
     align-self: center;
     width: 200px;
@@ -100,6 +113,7 @@ body{
     text-align:center;
     font-size: 50px;
 }
+
 #question{
     overflow-wrap: break-word;
     font-size: 40px;
@@ -112,6 +126,7 @@ body{
     border-style:solid;
     background-color:#333;
 }
+
 #answersContainer{
     margin-top: 1%;
     overflow-wrap: break-word;
@@ -123,6 +138,7 @@ body{
     grid-column-gap: 20px;
     grid-row-gap: 20px;
 }
+
 #answersContainer .answer {
     overflow-wrap: break-word;
     background-color: #333;
@@ -146,17 +162,21 @@ body{
     text-decoration: none;
     text-align: center;
 }
+
 #answersContainer .answer:hover, #answersContainer .answer:focus {
     color: #fff;
     outline: 0;
 }
+
 #answersContainer .answer {
     -webkit-transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
 }
+
 #answersContainer .answer:hover {
     box-shadow: 0 0 40px 40px #eec15d inset;
 }
+
 #footer form{
     width: 20%;
     height: 15%;
@@ -165,6 +185,7 @@ body{
     right: 1%;
     align-items: center;
 }
+
 #footer button{
     font-size: 30px;
     font-family: 'Helvetica Neue', sans-serif;
