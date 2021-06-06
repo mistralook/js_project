@@ -13,12 +13,12 @@ const gameFinishedEvent = new Event('gameFinished');
 
 modalContainer.addEventListener("gameFinished", function () {
     modalContainer.style.display = "block"
-    modalContainer.style.visibility="visible"
-    if(game.isAlive){
+    modalContainer.style.visibility = "visible"
+    if (game.isAlive) {
         const elem = document.getElementById("resultText");
         elem.textContent = "Вы выиграли";
         elem.style.background = "green";
-    }else document.getElementById("resultText").textContent="LOSE";
+    } else document.getElementById("resultText").textContent = "LOSE";
 
 })
 
@@ -30,36 +30,33 @@ function onTimerIsFinished() {
     Promise.resolve('Timer is finished');
 }
 
-async function sendResults(){
+async function sendResults() {
     let gameRes = {
         name: game.playerName,
         score: game.score
-      };
-    console.log(gameRes);
-      let response = await fetch('/postResults', {
+    };
+    let response = await fetch('/postResults', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(gameRes)
-      });
-      await response.json();
+    });
+    await response.json();
 }
-async function onGameFinished(){
+async function onGameFinished() {
     game.isAlive = false;
     game.computeScore()
     await sendResults();
 }
 
-document.getElementById("end").onclick = async ()=>{
+document.getElementById("end").onclick = async () => {
     await onGameFinished()
 };
 
-async function wait(time){
+async function wait(time) {
     await new Promise(resolve => {
-        setTimeout(() => {
-            resolve();
-        }, time);
+        setTimeout(resolve, time);
     });
 }
 
@@ -68,9 +65,9 @@ async function onGivenAnswer(timerId, q, playerAnswer) {
     const correctAnswer = q.getCorrectAnswer();
     if (game.isAlive) {
 
-        const button =[...document.getElementsByClassName("answer")]
+        const button = [...document.getElementsByClassName("answer")]
             .filter(butt => butt.textContent === correctAnswer)[0];
-        button.style.background="#237d11";
+        button.style.background = "#237d11";
         button.style.pointerEvents = "none";
         const timerScore = document.getElementById('timer').textContent;
         const score = document.getElementById("score");
@@ -80,17 +77,15 @@ async function onGivenAnswer(timerId, q, playerAnswer) {
 
     }
     else {
-        const button =[...document.getElementsByClassName("answer")]
+        const button = [...document.getElementsByClassName("answer")]
             .filter(butt => butt.textContent === playerAnswer)[0];
-        button.style.background="#aa1a1a";
+        button.style.background = "#aa1a1a";
         button.style.pointerEvents = "none";
-        const button1 =[...document.getElementsByClassName("answer")]
-          .filter(butt => butt.textContent === correctAnswer)[0];
-        button1.style.background="#237d11";
+        const button1 = [...document.getElementsByClassName("answer")]
+            .filter(butt => butt.textContent === correctAnswer)[0];
+        button1.style.background = "#237d11";
         button1.style.pointerEvents = "none";
         removeHandlers(".hints")
-        //removeHandlers("button");
-        // Показываем красную, зеленым правильную, таймаут, вы проиграли (колво очков), рестарт
     }
     await wait(2000);
     clearInterval(timerId);
@@ -99,9 +94,7 @@ async function onGivenAnswer(timerId, q, playerAnswer) {
 
 function createPromise(q) {
     return new Promise((resolve, _) => {
-        let timerId = setTimeout(() => {
-            onTimerIsFinished()//обёртка вроде не нужна?
-        }, roundDuration);
+        let timerId = setTimeout(onTimerIsFinished, roundDuration);
         const timer = new Timer(roundDuration);
         timer.start();
 
@@ -154,7 +147,6 @@ async function start() {
         let result = await promise;
         removeHandlers(".answer");
         if (!game.isAlive) {
-            console.log("breaking/ Finish the game")
             break;
         }
     }
