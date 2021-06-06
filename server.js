@@ -103,9 +103,7 @@ app.get('/leaderboard', async (req, res,next) => {
 
 app.post('/postResults', async (req, res) => {
     const data=await req.body;
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
-    res.setHeader("Referrer-Policy","strict-origin-when-cross-origin")
+
     res.send(req.body);
     const sc = data.score;
     const plName= decodeURI(data.name);

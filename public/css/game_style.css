@@ -46,7 +46,6 @@ body{
     font-weight:bolder;
     font-family: 'Helvetica Neue', sans-serif;
 }
-
 #leftHeader,
 #rightHeader {
     display: flex;
@@ -61,7 +60,6 @@ body{
     background: url("/images/phone.png") no-repeat top;
     background-size: 100% 100%;
     cursor: pointer;
-
 }
 #rightHeader #fiftyfifty{
     background: url("/images/fifty.png") no-repeat top;
@@ -80,12 +78,10 @@ body{
     align-items: center;
     margin : -30px -100px;
 }
-
 #rightHeader button{
     width: 49%;
     height: 100%;
     border-radius: 50%;
-
     line-height:200px;
     text-align:center;
     font-size: 50px;
@@ -116,11 +112,9 @@ body{
     border-style:solid;
     background-color:#333;
 }
-
 #answersContainer{
     margin-top: 1%;
     overflow-wrap: break-word;
-
     justify-content: center;
     display:grid;
     grid-template-columns: 40% 40%;
@@ -129,7 +123,6 @@ body{
     grid-column-gap: 20px;
     grid-row-gap: 20px;
 }
-
 #answersContainer .answer {
     overflow-wrap: break-word;
     background-color: #333;
@@ -144,9 +137,6 @@ body{
     font-family: 'Helvetica Neue', sans-serif;
     border-width: medium;
     border-style: solid;
-
-
-
     box-sizing: border-box;
     appearance: none;
     cursor: pointer;
@@ -155,24 +145,18 @@ body{
     line-height: 1;
     text-decoration: none;
     text-align: center;
-
 }
-
 #answersContainer .answer:hover, #answersContainer .answer:focus {
     color: #fff;
     outline: 0;
 }
-
 #answersContainer .answer {
     -webkit-transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
     transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
 }
-
 #answersContainer .answer:hover {
     box-shadow: 0 0 40px 40px #eec15d inset;
 }
-
-
 #footer form{
     width: 20%;
     height: 15%;

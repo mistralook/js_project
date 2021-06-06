@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<table border="1" width="100%" cellpadding="5">
+<table border="1" cellpadding="5">
     <tr>
         <th>Место</th>
         <th>Имя</th>
@@ -30,17 +30,16 @@
     <% } %>
     <tr>
         <td><%= data[n-1].place %></td>
-        <td><%= data[n-1].name %></td>
+        <td><%= decodeURI(data[n-1].name) %></td>
         <td><%= data[n-1].score %></td>
     </tr>
 
 </table>
     <form  method="get" action="/game">
-        <button id = "newStart" type="submit" name="name" value=<%=encodeURI(userName)%> > Начать заново</button>
-
+        <button id = "newStart" type="submit" name="name" value=<%-JSON.stringify(decodeURI(userName))%> > Начать заново</button>
     </form>
 <script>
-    const userName = <%-JSON.stringify(decodeURIComponent(userName))%>;
+    const userName = <%-JSON.stringify(decodeURI(userName))%>;
     const td =[...document.getElementsByTagName("td")].filter(item => item.innerText === userName)[0];
     [td.parentElement][0].style.background="#e0b139";
 </script>

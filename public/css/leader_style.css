@@ -5,13 +5,15 @@ body{
     color: #ffffff;
 
 }
+table{
+    width:100%;
+}
 
 td{
     text-align: center;
 }
 
 #newStart{
-
     width: 55%;
     height: 80%;
     background-color:#333;

@@ -45,10 +45,14 @@ async function sendResults(){
       });
       await response.json();
 }
-
-
-document.getElementById("end").onclick=async ()=>{
+async function onGameFinished(){
+    game.isAlive = false;
+    game.computeScore()
     await sendResults();
+}
+
+document.getElementById("end").onclick = async ()=>{
+    await onGameFinished()
 };
 
 async function wait(time){

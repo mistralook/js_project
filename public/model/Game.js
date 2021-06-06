@@ -1,13 +1,12 @@
 import QuestionGenerator from './QuestionGenerator.js'
 
-
 const Hints = {
     "FiftyFifty": 0,
     "FriendCall": 1,
     "AskTheAudience": 2
 }
 
-const GuaranteedScore = [0,100,1000,2000]
+const GuaranteedScore = [0,500,1000,2000]
 
 class Game {
     constructor(playerName) {
@@ -23,14 +22,17 @@ class Game {
         const gen = new QuestionGenerator();     
         this.pool = await gen.generateQuestions();
     }
-
+    computeScore(){
+        if(!this.isAlive){
+            const guarantedScore = GuaranteedScore.filter(item => item <= this.score);
+            this.score = guarantedScore[guarantedScore.length - 1];
+        }
+    }
     checkAnswer(currentQuestion, answer) {
         if (answer === currentQuestion.getCorrectAnswer()) {
             this.score += currentQuestion.price;
         } else {
-            const guarantedScore = GuaranteedScore.filter(item => item <= this.score);
-            this.score = guarantedScore[guarantedScore.length - 1];
-            console.log(this.score);
+
             this.isAlive = false;
         }
     }
