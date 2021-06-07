@@ -152,6 +152,7 @@ async function start() {
     }
     modalContainer.dispatchEvent(gameFinishedEvent);
     game.isAlive = false;
+    await sendResults();
 }
 
 start();

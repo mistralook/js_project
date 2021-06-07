@@ -41,13 +41,16 @@ app.get('/leaderboard', async (req, res, next) => {
 
 app.post('/postResults', async (req, res) => {
     const data = await req.body;
+    const userName = decodeURI(req.query.user);
+    const leaderboard = await getLeaderboard(userName);
+    const inTop = leaderboard.length === leaderboardSize;
 
-    res.send(req.body);
     const sc = data.score;
     const plName = decodeURI(data.name);
     const query = `INSERT INTO leaderboard (name, score) VALUES ('${plName}', ${sc}) ON CONFLICT (name) DO UPDATE SET score = 
         case when leaderboard.score > EXCLUDED.score then leaderboard.score else EXCLUDED.score end;`;
     await db.none(query);
+    res.render("leaderboard", { data: leaderboard, n: leaderboard.length, inTop: inTop, userName: userName });
 });
 
 
